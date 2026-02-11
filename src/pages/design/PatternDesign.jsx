@@ -78,7 +78,12 @@ const PatternDesign = () => {
   };
 
   const handleNext = () => {
-    updateSeriesData(parseInt(seriesId), { patterns });
+    const patternDetails = {
+      placket: { name: patterns.placket, image: patternImages[patterns.placket] },
+      cuff: { name: patterns.cuff, image: patternImages[patterns.cuff] },
+      hood: { name: patterns.hood, image: patternImages[patterns.hood] }
+    };
+    updateSeriesData(parseInt(seriesId), { patterns, patternDetails });
     navigate('../tryon');
   };
   
@@ -103,11 +108,10 @@ const PatternDesign = () => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-between items-center mb-6 flex-shrink-0">
-        <h2 className="text-2xl font-bold text-slate-900">2.2 纹样设计</h2>
+        <h2 className="text-2xl font-bold text-slate-900">纹样设计</h2>
         <button
           onClick={handleNext}
-          disabled={!patterns.placket || !patterns.cuff || !patterns.hood}
-          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 transition-colors shadow-sm"
+          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
         >
           生成上身效果
           <ArrowRight className="w-4 h-4 ml-2" />

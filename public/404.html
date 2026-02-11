@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毕业服AI智能提案平台</title>
+    <script>
+        // GitHub Pages SPA路由处理
+        (function() {
+            var redirect = sessionStorage.redirect;
+            delete sessionStorage.redirect;
+            if (redirect && redirect != location.href) {
+                history.replaceState(null, null, redirect);
+            }
+        })();
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="/graduation-ai-platform/src/main.jsx"></script>
+</body>
+</html>

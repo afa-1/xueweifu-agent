@@ -1,6 +1,6 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-import { PenTool } from 'lucide-react';
+import { Outlet, NavLink } from 'react-router-dom';
+import { PenTool, BookOpen } from 'lucide-react';
 
 const Layout = () => {
   return (
@@ -9,10 +9,34 @@ const Layout = () => {
         {/* Left Sidebar */}
         <aside className="w-64 bg-white border-r border-slate-200 flex flex-col flex-shrink-0">
           <div className="flex-1 overflow-y-auto py-6 px-4 space-y-2">
-            <button className="w-full flex items-center space-x-3 px-3 py-3 bg-indigo-50 text-indigo-700 rounded-lg transition-colors font-medium">
-              <PenTool className="h-5 w-5 text-indigo-600" />
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `w-full flex items-center space-x-3 px-3 py-3 rounded-lg transition-colors font-medium ${
+                  isActive
+                    ? 'bg-indigo-50 text-indigo-700'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`
+              }
+              end
+            >
+              <PenTool className="h-5 w-5" />
               <span>学位服智能提案</span>
-            </button>
+            </NavLink>
+            
+            <NavLink
+              to="/school-research"
+              className={({ isActive }) =>
+                `w-full flex items-center space-x-3 px-3 py-3 rounded-lg transition-colors font-medium ${
+                  isActive
+                    ? 'bg-indigo-50 text-indigo-700'
+                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                }`
+              }
+            >
+              <BookOpen className="h-5 w-5" />
+              <span>院校调研助手</span>
+            </NavLink>
           </div>
           
           <div className="p-4 border-t border-slate-100">

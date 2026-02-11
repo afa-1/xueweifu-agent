@@ -5,6 +5,7 @@ import ConceptSelection from './pages/ConceptSelection';
 import CaseDetail from './pages/CaseDetail';
 import DesignLoop from './pages/DesignLoop';
 import Production from './pages/Production';
+import SchoolResearch from './pages/SchoolResearch';
 import Layout from './components/Layout';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Initialization />} />
+          <Route path="school-research" element={<SchoolResearch />} />
           <Route path="case-detail/:id" element={<CaseDetail />} />
           <Route path="concepts" element={<ConceptSelection />} />
           <Route path="design/:seriesId/*" element={<DesignLoop />} />

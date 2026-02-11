@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import useAppStore from '../../store/useAppStore';
 import { Loader2, ArrowLeft, Camera, Move, RotateCw, ZoomIn, RefreshCcw, Layers } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const StandardTryOn = () => {
   const navigate = useNavigate();
   const { seriesId } = useParams();
+  const updateSeriesData = useAppStore(state => state.updateSeriesData);
+  const seriesData = useAppStore(state => state.seriesData);
+  const currentSeries = seriesData[parseInt(seriesId)];
+
   const [loading, setLoading] = useState(true);
   const [currentView, setCurrentView] = useState('front'); // 'front' or 'back'
   
@@ -25,8 +30,8 @@ const StandardTryOn = () => {
     back: "https://images.unsplash.com/photo-1623942062534-1925b4105436?auto=format&fit=crop&q=80&w=800" // Placeholder for back view
   };
 
-  // Mock pattern image - In a real app this comes from the previous step
-  const patternImage = "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=400";
+  // Use pattern image from previous step or fallback to mock
+  const patternImage = currentSeries?.patternDetails?.placket?.image || "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&q=80&w=400";
 
   useEffect(() => {
     // Mock rendering time
@@ -52,7 +57,7 @@ const StandardTryOn = () => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-slate-900">2.3 上身效果验证</h2>
+        <h2 className="text-2xl font-bold text-slate-900">上身效果验证</h2>
         <div className="flex bg-slate-100 p-1 rounded-lg">
             <button
                 onClick={() => setCurrentView('front')}
@@ -185,7 +190,11 @@ const StandardTryOn = () => {
 
             <div className="mt-auto pt-6 border-t border-slate-100 space-y-3">
                  <button
-                    onClick={() => navigate('../photos')}
+                    onClick={() => {
+                        // Save current view as try-on image (mock)
+                        updateSeriesData(parseInt(seriesId), { tryOnImage: gownImages[currentView] });
+                        navigate('../photos');
+                    }}
                     className="w-full py-3 text-sm font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 shadow-md shadow-indigo-200 flex items-center justify-center transition-all hover:scale-[1.02]"
                   >
                     <Camera className="w-4 h-4 mr-2" />

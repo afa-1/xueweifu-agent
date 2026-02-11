@@ -1,12 +1,44 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-const useAppStore = create((set) => ({
-  // Phase 1: Initialization
-  schoolName: '',
+const useAppStore = create(
+  persist(
+    (set) => ({
+      // Phase 1: Initialization
+      schoolName: '',
   productCount: 1,
   campaignTemplate: 'classic', // 'neo-chinese' | 'classic' | 'modern'
   landmarks: [],
   cultureKeywords: [],
+  
+  // School Research Data
+  researchHistory: [],
+  researchData: {
+    // 1. 院校基本面
+    basicInfo: { name: '', abbreviation: '', foundYear: '', location: '' },
+    // 2. 学校文化灵魂
+    cultureSoul: { motto: '', lyrics: '', vision: '', spirit: '' },
+    // 3. 符号语义块
+    symbolSemantics: { badgeDesc: '', flagDesc: '', colorDesc: '' },
+    // 4. 历史时间轴
+    history: [], // { year: '1902', event: 'Founded' }
+    alumni: '', // Representative alumni
+    // 5. 核心地标语义
+    landmarkSemantics: '', 
+    // 6. 生态环境语义
+    ecoSemantics: '',
+    // 7. 荣誉与学科
+    achievements: { strongSubjects: '', keyResults: '' },
+    // 8. 营销话术
+    marketing: { principalMessage: '', catchphrases: '', nicknames: '' },
+    
+    // Visuals
+    visuals: {
+      landmarks: [], // Image URLs
+      vi: [] // VI files
+    }
+  },
+
   creativeConcepts: [],
   selectedConcepts: [],
   
@@ -25,6 +57,69 @@ const useAppStore = create((set) => ({
   
   setAssets: (landmarks, keywords) => set({ landmarks, cultureKeywords: keywords }),
   
+  setResearchData: (data) => set({ researchData: data }),
+  
+  addToHistory: (data) => set((state) => {
+    // Check if school already exists in history, if so update it, otherwise add it
+    const existingIndex = state.researchHistory.findIndex(
+      item => item.basicInfo?.name === data.basicInfo?.name
+    );
+    
+    let newHistory;
+    if (existingIndex >= 0) {
+      newHistory = [...state.researchHistory];
+      newHistory[existingIndex] = { ...newHistory[existingIndex], ...data, updatedAt: new Date().toISOString() };
+    } else {
+      newHistory = [{ ...data, updatedAt: new Date().toISOString() }, ...state.researchHistory];
+    }
+    
+    return { researchHistory: newHistory };
+  }),
+
+  saveProposalToHistory: (finalUrl) => set((state) => {
+    if (!state.schoolName) return {};
+
+    const proposalData = {
+      campaignTemplate: state.campaignTemplate,
+      seriesData: state.seriesData,
+      deliveryFormat: state.deliveryFormat,
+      finalVideoUrl: finalUrl || state.finalVideoUrl,
+      accessPassword: Math.random().toString(36).slice(-6).toUpperCase(), // Generate random password
+      completedAt: new Date().toISOString()
+    };
+
+    const existingIndex = state.researchHistory.findIndex(
+      item => item.basicInfo?.name === state.schoolName || item.schoolName === state.schoolName
+    );
+
+    let newHistory;
+    if (existingIndex >= 0) {
+      newHistory = [...state.researchHistory];
+      newHistory[existingIndex] = { 
+        ...newHistory[existingIndex], 
+        proposalData,
+        updatedAt: new Date().toISOString() 
+      };
+    } else {
+      // If school not in research history, create a new entry
+      newHistory = [{ 
+        schoolName: state.schoolName,
+        basicInfo: { name: state.schoolName },
+        proposalData, 
+        updatedAt: new Date().toISOString() 
+      }, ...state.researchHistory];
+    }
+
+    return { researchHistory: newHistory };
+  }),
+
+  updateResearchData: (section, data) => set((state) => ({
+    researchData: {
+      ...state.researchData,
+      [section]: { ...state.researchData[section], ...data }
+    }
+  })),
+
   setCreativeConcepts: (concepts) => set({ creativeConcepts: concepts }),
 
   updateCreativeConcept: (id, data) => set((state) => ({
@@ -61,7 +156,9 @@ const useAppStore = create((set) => ({
   
   startRendering: () => set({ isRendering: true, renderingProgress: 0 }),
   
-  updateRenderingProgress: (progress) => set({ renderingProgress: progress }),
+  updateRenderingProgress: (progress) => set((state) => ({ 
+    renderingProgress: typeof progress === 'function' ? progress(state.renderingProgress) : progress 
+  })),
   
   finishRendering: (videoUrl) => set({ isRendering: false, renderingProgress: 100, finalVideoUrl: videoUrl }),
 
@@ -79,6 +176,21 @@ const useAppStore = create((set) => ({
     renderingProgress: 0,
     finalVideoUrl: null,
   })
-}));
+    }),
+    {
+      name: 'degree-gown-storage', // unique name
+      partialize: (state) => ({ 
+        researchHistory: state.researchHistory,
+        researchData: state.researchData,
+        schoolName: state.schoolName,
+        landmarks: state.landmarks,
+        cultureKeywords: state.cultureKeywords,
+        creativeConcepts: state.creativeConcepts,
+        selectedConcepts: state.selectedConcepts,
+        seriesData: state.seriesData
+      }),
+    }
+  )
+);
 
 export default useAppStore;

@@ -20,7 +20,7 @@ const DesignSummary = () => {
       setRationale(currentSeries.rationale);
     } else {
       // Mock rationale generation based on concept
-      const generatedText = `本系列以“${currentSeries.concept.title}”为核心主题，选用经典的双襟款式，呼应学校严谨的治学风范。纹样设计灵感源自${currentSeries.patterns.hood || '校园文化'}，寓意求知之窗。整体设计既保留了传统礼仪感，又兼具现代审美，完美诠释了“${currentSeries.concept.slogan}”的精神内涵。`;
+      const generatedText = `本系列以“${currentSeries.concept?.title || '未命名主题'}”为核心主题，选用经典的双襟款式，呼应学校严谨的治学风范。纹样设计灵感源自${currentSeries.patterns?.hood || '校园文化'}，寓意求知之窗。整体设计既保留了传统礼仪感，又兼具现代审美，完美诠释了“${currentSeries.concept?.slogan || '追求卓越'}”的精神内涵。`;
       setRationale(generatedText);
     }
   }, [currentSeries]);
@@ -42,7 +42,7 @@ const DesignSummary = () => {
 
   return (
     <div className="max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold text-slate-900 mb-6">2.6 设计理念阐述与系列小结</h2>
+      <h2 className="text-2xl font-bold text-slate-900 mb-6">设计理念阐述与系列小结</h2>
 
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-8">
         <div className="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
@@ -90,7 +90,11 @@ const DesignSummary = () => {
           </li>
           <li className="flex justify-between">
             <span>视频动态：</span>
-            <span className="font-medium text-slate-900">{currentSeries.videoPreset}</span>
+            <span className="font-medium text-slate-900">
+              {typeof currentSeries.videoPreset === 'object' 
+                ? currentSeries.videoPreset?.name 
+                : currentSeries.videoPreset || '未选择'}
+            </span>
           </li>
         </ul>
       </div>

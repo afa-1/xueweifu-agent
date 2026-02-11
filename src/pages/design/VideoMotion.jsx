@@ -44,8 +44,11 @@ const VideoMotion = () => {
   };
 
   const handleNext = () => {
-    // In a real app, we'd save the selected video or both
-    updateSeriesData(parseInt(seriesId), { videoPreset: selectedVideo || 'video-1' });
+    let videoToSave = videos.find(v => v.id === selectedVideo);
+    if (!videoToSave && videos.length > 0) {
+        videoToSave = videos[0]; // Default to first if none selected
+    }
+    updateSeriesData(parseInt(seriesId), { videoPreset: videoToSave });
     navigate('../summary');
   };
 
@@ -61,10 +64,10 @@ const VideoMotion = () => {
   return (
     <div className="flex flex-col h-full">
       <div className="flex justify-between items-center mb-6 shrink-0">
-        <h2 className="text-2xl font-bold text-slate-900">2.5 视频动态预设</h2>
+        <h2 className="text-2xl font-bold text-slate-900">视频动态预设</h2>
         <button
           onClick={handleNext}
-          className="flex items-center px-4 py-2 bg-indigo-600 text白色 rounded-lg hover:bg-indigo-700"
+          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
         >
           确认动态效果
           <ArrowRight className="w-4 h-4 ml-2" />
@@ -87,14 +90,14 @@ const VideoMotion = () => {
                         
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${
-                                selectedVideo === video.id ? 'bg-indigo-600 text白色 scale-110' : 'bg-white/20 backdrop-blur-sm text白色 group-hover:scale-110'
+                                selectedVideo === video.id ? 'bg-indigo-600 text-white scale-110' : 'bg-white/20 backdrop-blur-sm text-white group-hover:scale-110'
                             }`}>
                                 {selectedVideo === video.id ? <Check className="w-8 h-8" /> : <Play className="w-8 h-8 fill-current" />}
                             </div>
                         </div>
                         
                         <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                            <p className="text白色 font-medium">{video.name}</p>
+                            <p className="text-white font-medium">{video.name}</p>
                             <p className="text-xs text-white/70">预览模式 (低保真)</p>
                         </div>
                     </div>
@@ -114,7 +117,7 @@ const VideoMotion = () => {
                 <textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    className="w-full h-14 min-h-[3.5rem] bg白色 rounded-xl border border-indigo-100 shadow-sm pl-4 pr-36 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none"
+                    className="w-full h-14 min-h-[3.5rem] bg-white rounded-xl border border-indigo-100 shadow-sm pl-4 pr-36 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none"
                     placeholder="描述您想要的视频运镜和动态风格..."
                     disabled={isRegenerating}
                 />
@@ -122,7 +125,7 @@ const VideoMotion = () => {
                 <button
                     onClick={handleRegenerate}
                     disabled={isRegenerating || !prompt.trim()}
-                    className="absolute right-2 top-2 bottom-2 px-4 bg-indigo-600 hover:bg-indigo-700 text白色 text-xs font-medium rounded-lg flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
+                    className="absolute right-2 top-2 bottom-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
                 >
                     {isRegenerating ? (
                         <>
