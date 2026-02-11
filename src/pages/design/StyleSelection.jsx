@@ -20,8 +20,8 @@ const StyleSelection = () => {
   }, [currentSeries?.style]);
 
   const styles = [
-    { id: 'hood', name: '半标品帽兜款式1——帽兜款', shortName: '帽兜款', image: 'https://images.pexels.com/photos/7942547/pexels-photo-7942547.jpeg?auto=compress&cs=tinysrgb&w=800' },
-    { id: 'cape', name: '半标品帽兜款式2——披肩款', shortName: '披肩款', image: 'https://images.pexels.com/photos/7942612/pexels-photo-7942612.jpeg?auto=compress&cs=tinysrgb&w=800' },
+    { id: 'hood', name: '半标品帽兜款式1——帽兜款', shortName: '帽兜款', image: '/styles/hood.png' },
+    { id: 'cape', name: '半标品帽兜款式2——披肩款', shortName: '披肩款', image: '/styles/cape.png' },
   ];
 
   const handleSelect = (style) => {
