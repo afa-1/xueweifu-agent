@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAppStore from '../../store/useAppStore';
 import { Edit2, CheckCircle } from 'lucide-react';
@@ -12,9 +12,18 @@ const DesignSummary = () => {
   const currentSeries = seriesData[seriesIndex];
   const productCount = useAppStore(state => state.productCount);
 
-  const generatedText = currentSeries.rationale || `本系列以“${currentSeries.concept.title}”为核心主题，选用经典的双襟款式，呼应学校严谨的治学风范。纹样设计灵感源自${currentSeries.patterns.hood || '校园文化'}，寓意求知之窗。整体设计既保留了传统礼仪感，又兼具现代审美，完美诠释了“${currentSeries.concept.slogan}”的精神内涵。`;
-  const [rationale, setRationale] = useState(generatedText);
+  const [rationale, setRationale] = useState('');
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (currentSeries.rationale) {
+      setRationale(currentSeries.rationale);
+    } else {
+      // Mock rationale generation based on concept
+      const generatedText = `本系列以“${currentSeries.concept.title}”为核心主题，选用经典的双襟款式，呼应学校严谨的治学风范。纹样设计灵感源自${currentSeries.patterns.hood || '校园文化'}，寓意求知之窗。整体设计既保留了传统礼仪感，又兼具现代审美，完美诠释了“${currentSeries.concept.slogan}”的精神内涵。`;
+      setRationale(generatedText);
+    }
+  }, [currentSeries]);
 
   const handleConfirm = () => {
     updateSeriesData(seriesIndex, { 

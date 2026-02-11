@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Loader2, ArrowLeft, Camera, Move, RotateCw, ZoomIn, RefreshCcw, Layers } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const StandardTryOn = () => {
   const navigate = useNavigate();
+  const { seriesId } = useParams();
   const [loading, setLoading] = useState(true);
   const [currentView, setCurrentView] = useState('front'); // 'front' or 'back'
   

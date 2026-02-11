@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAppStore from '../../store/useAppStore';
-import { Loader2, Check, ArrowRight, Sparkles, RotateCw } from 'lucide-react';
+import { Loader2, Check, ArrowRight, Sparkles, RotateCw, Image as ImageIcon, X } from 'lucide-react';
 
 const CampaignPhotoshoot = () => {
   const navigate = useNavigate();
   const { seriesId } = useParams();
   const updateSeriesData = useAppStore(state => state.updateSeriesData);
   const currentSeries = useAppStore(state => state.seriesData[parseInt(seriesId)]);
+  const fileInputRef = useRef(null);
   
   const [loading, setLoading] = useState(true);
   const [isRegenerating, setIsRegenerating] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [selectedPhotos, setSelectedPhotos] = useState(currentSeries.selectedPhotos || []);
   const [prompt, setPrompt] = useState('Happy graduates celebrating on campus lawn, high quality, photorealistic, 4k');
+  const [uploadedImage, setUploadedImage] = useState(null);
 
   useEffect(() => {
     // Mock generation
@@ -33,8 +35,30 @@ const CampaignPhotoshoot = () => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setUploadedImage(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
+  const removeUploadedImage = () => {
+    setUploadedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
   const handleRegenerate = () => {
-    if (!prompt.trim()) return;
+    if (!prompt.trim() && !uploadedImage) return;
     setIsRegenerating(true);
     
     // Simulate API call for new photos
@@ -121,14 +145,52 @@ const CampaignPhotoshoot = () => {
                 <textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    className="w-full h-14 min-h-[3.5rem] bg-white rounded-xl border border-indigo-100 shadow-sm pl-4 pr-36 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none"
+                    className="w-full h-14 min-h-[3.5rem] bg-white rounded-xl border border-indigo-100 shadow-sm pl-12 pr-36 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none"
                     placeholder="描述您想要的场景风格，例如：'阳光明媚的校园草坪，学生们欢笑着抛起学士帽'..."
                     disabled={isRegenerating}
                 />
                 
+                {/* Image Upload Button (Inside Left) */}
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
+                    <input 
+                      type="file" 
+                      ref={fileInputRef} 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                    />
+                    <button
+                      onClick={triggerFileInput}
+                      disabled={isRegenerating}
+                      className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                      title="上传参考图"
+                    >
+                      <ImageIcon className="w-5 h-5" />
+                    </button>
+                </div>
+
+                {/* Uploaded Image Preview */}
+                {uploadedImage && (
+                    <div className="absolute bottom-full left-0 mb-2 z-10">
+                        <div className="relative group">
+                            <img 
+                            src={uploadedImage} 
+                            alt="Reference" 
+                            className="h-16 w-16 rounded-lg object-cover border-2 border-indigo-200 shadow-lg bg-white" 
+                            />
+                            <button 
+                            onClick={removeUploadedImage}
+                            className="absolute -top-2 -right-2 bg-white rounded-full p-1 shadow-md border border-slate-200 text-slate-500 hover:text-red-500 hover:bg-red-50 transition-colors"
+                            >
+                            <X className="w-3 h-3" />
+                            </button>
+                        </div>
+                    </div>
+                )}
+                
                 <button
                     onClick={handleRegenerate}
-                    disabled={isRegenerating || !prompt.trim()}
+                    disabled={isRegenerating || (!prompt.trim() && !uploadedImage)}
                     className="absolute right-2 top-2 bottom-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
                 >
                     {isRegenerating ? (

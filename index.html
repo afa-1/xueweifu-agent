@@ -8,16 +8,6 @@
   </head>
   <body>
     <div id="root"></div>
-    <script>
-      (function () {
-        const params = new URLSearchParams(window.location.search);
-        const path = params.get('p');
-        if (path) {
-          const url = new URL(path, window.location.origin);
-          window.history.replaceState(null, '', url.pathname + url.search + url.hash);
-        }
-      })();
-    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

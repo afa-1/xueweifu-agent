@@ -26,6 +26,12 @@ const useAppStore = create((set) => ({
   setAssets: (landmarks, keywords) => set({ landmarks, cultureKeywords: keywords }),
   
   setCreativeConcepts: (concepts) => set({ creativeConcepts: concepts }),
+
+  updateCreativeConcept: (id, data) => set((state) => ({
+    creativeConcepts: state.creativeConcepts.map(c => 
+      c.id === id ? { ...c, ...data } : c
+    )
+  })),
   
   selectConcepts: (selectedIndices) => set((state) => {
     // Initialize series data based on selected concepts

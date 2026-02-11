@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAppStore from '../../store/useAppStore';
-import { RotateCw, ArrowRight, Sparkles, Send, Bot, User, Loader2 } from 'lucide-react';
+import { RotateCw, ArrowRight, Sparkles, Send, Bot, User, Loader2, Image as ImageIcon, X } from 'lucide-react';
 
 const PatternDesign = () => {
   const navigate = useNavigate();
   const { seriesId } = useParams();
   const updateSeriesData = useAppStore(state => state.updateSeriesData);
   const currentSeries = useAppStore(state => state.seriesData[parseInt(seriesId)]);
+  const fileInputRef = useRef(null);
 
   const [patterns, setPatterns] = useState(currentSeries.patterns || { placket: null, cuff: null, hood: null });
   const [activeTab, setActiveTab] = useState('placket');
@@ -21,6 +22,35 @@ const PatternDesign = () => {
 
   const [currentPrompt, setCurrentPrompt] = useState(defaultPrompts['placket']);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
+
+  // Update prompt when tab changes
+  useEffect(() => {
+    setCurrentPrompt(defaultPrompts[activeTab]);
+    setUploadedImage(null); // Clear uploaded image on tab change
+  }, [activeTab]);
+
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setUploadedImage(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
+  const removeUploadedImage = () => {
+    setUploadedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const options = {
     placket: ['云纹', '回纹', '校徽纹', '几何纹'],
@@ -47,18 +77,13 @@ const PatternDesign = () => {
     setPatterns(prev => ({ ...prev, [type]: value }));
   };
 
-  const handleTabChange = (tabId) => {
-    setActiveTab(tabId);
-    setCurrentPrompt(defaultPrompts[tabId]);
-  };
-
   const handleNext = () => {
     updateSeriesData(parseInt(seriesId), { patterns });
     navigate('../tryon');
   };
   
   const handleRegenerate = () => {
-    if (!currentPrompt.trim()) return;
+    if (!currentPrompt.trim() && !uploadedImage) return;
     
     setIsGenerating(true);
     
@@ -94,7 +119,7 @@ const PatternDesign = () => {
           {tabs.map(tab => (
             <button
               key={tab.id}
-              onClick={() => handleTabChange(tab.id)}
+              onClick={() => setActiveTab(tab.id)}
               className={`flex-1 py-4 text-sm font-medium text-center transition-colors ${
                 activeTab === tab.id
                   ? 'bg-indigo-50 text-indigo-700 border-b-2 border-indigo-600'
@@ -148,15 +173,49 @@ const PatternDesign = () => {
           <textarea
             value={currentPrompt}
             onChange={(e) => setCurrentPrompt(e.target.value)}
-            className="w-full h-24 p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm resize-none text-slate-700"
+            className="w-full h-24 p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm resize-none text-slate-700 pr-32"
             placeholder="输入提示词以生成新的纹样设计..."
             disabled={isGenerating}
           />
+
+          {/* Uploaded Image Preview */}
+          {uploadedImage && (
+            <div className="absolute bottom-16 left-4 z-10">
+              <div className="relative group">
+                <img 
+                  src={uploadedImage} 
+                  alt="Reference" 
+                  className="h-12 w-12 rounded-lg object-cover border-2 border-indigo-200 shadow-sm" 
+                />
+                <button 
+                  onClick={removeUploadedImage}
+                  className="absolute -top-1 -right-1 bg-white rounded-full p-0.5 shadow-md border border-slate-200 text-slate-500 hover:text-red-500"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
+            </div>
+          )}
           
-          <div className="absolute bottom-3 right-3">
+          <div className="absolute bottom-3 right-3 flex items-center gap-2">
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              className="hidden" 
+              accept="image/*"
+              onChange={handleImageUpload}
+            />
+            <button
+              onClick={triggerFileInput}
+              disabled={isGenerating}
+              className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+              title="上传参考图"
+            >
+              <ImageIcon className="w-5 h-5" />
+            </button>
             <button
               onClick={handleRegenerate}
-              disabled={isGenerating || !currentPrompt.trim()}
+              disabled={isGenerating || (!currentPrompt.trim() && !uploadedImage)}
               className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm shadow-sm"
             >
               {isGenerating ? (
@@ -174,7 +233,7 @@ const PatternDesign = () => {
           </div>
         </div>
         <p className="mt-2 text-xs text-slate-400">
-          * 修改提示词并点击“重新生成”可尝试不同的设计风格。当前提示词展示了该区域纹样的生成逻辑。
+          * 修改提示词或上传参考图并点击“重新生成”可尝试不同的设计风格。当前提示词展示了该区域纹样的生成逻辑。
         </p>
       </div>
     </div>

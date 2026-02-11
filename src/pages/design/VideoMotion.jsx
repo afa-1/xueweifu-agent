@@ -7,6 +7,7 @@ const VideoMotion = () => {
   const navigate = useNavigate();
   const { seriesId } = useParams();
   const updateSeriesData = useAppStore(state => state.updateSeriesData);
+  const currentSeries = useAppStore(state => state.seriesData[parseInt(seriesId)]);
   
   const [loading, setLoading] = useState(true);
   const [isRegenerating, setIsRegenerating] = useState(false);

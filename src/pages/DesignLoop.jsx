@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useLocation, Routes, Route, Navigate } from 'react-router-dom';
+import { useParams, useLocation, useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 import useAppStore from '../store/useAppStore';
 import { Shirt, PaintBucket, User, Image as ImageIcon, Video, FileText } from 'lucide-react';
 
@@ -12,6 +12,7 @@ import DesignSummary from './design/DesignSummary';
 
 const DesignLoop = () => {
   const { seriesId } = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const seriesData = useAppStore(state => state.seriesData);
   const currentSeries = seriesData[parseInt(seriesId)];

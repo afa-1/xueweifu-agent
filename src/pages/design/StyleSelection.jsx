@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAppStore from '../../store/useAppStore';
 import { Check, ArrowRight } from 'lucide-react';
@@ -12,9 +12,16 @@ const StyleSelection = () => {
 
   const [selectedStyle, setSelectedStyle] = useState(currentSeries?.style || null);
 
+  // Sync state if store updates (e.g. going back)
+  useEffect(() => {
+    if (currentSeries?.style) {
+      setSelectedStyle(currentSeries.style);
+    }
+  }, [currentSeries?.style]);
+
   const styles = [
-    { id: 'hood', name: '半标品帽兜款式1——帽兜款', shortName: '帽兜款', image: '/styles/hood.png' },
-    { id: 'cape', name: '半标品帽兜款式2——披肩款', shortName: '披肩款', image: '/styles/cape.png' },
+    { id: 'hood', name: '半标品帽兜款式1——帽兜款', shortName: '帽兜款', image: 'https://images.pexels.com/photos/7942547/pexels-photo-7942547.jpeg?auto=compress&cs=tinysrgb&w=800' },
+    { id: 'cape', name: '半标品帽兜款式2——披肩款', shortName: '披肩款', image: 'https://images.pexels.com/photos/7942612/pexels-photo-7942612.jpeg?auto=compress&cs=tinysrgb&w=800' },
   ];
 
   const handleSelect = (style) => {
