@@ -57,7 +57,7 @@ const StyleSelection = () => {
                 </div>
               )}
 
-              <div className="aspect-[3/4] bg-slate-50 relative p-6 flex items-center justify-center">
+              <div className="aspect-[3/4] bg-slate-50 relative p-6 flex items-center justify=center">
                 <img 
                   src={style.image} 
                   alt={style.name} 

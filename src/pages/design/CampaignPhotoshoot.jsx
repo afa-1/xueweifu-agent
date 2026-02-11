@@ -191,7 +191,7 @@ const CampaignPhotoshoot = () => {
                 <button
                     onClick={handleRegenerate}
                     disabled={isRegenerating || (!prompt.trim() && !uploadedImage)}
-                    className="absolute right-2 top-2 bottom-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
+                    className="absolute right-2 top-2 bottom-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg flex items=center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
                 >
                     {isRegenerating ? (
                         <>

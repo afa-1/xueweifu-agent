@@ -74,7 +74,7 @@ const CaseDetail = () => {
           alt={data.title} 
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items-end">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex items=end">
           <div className="max-w-7xl mx-auto px-6 pb-12 w-full">
             <div className="flex items-center space-x-4 mb-4">
               <span className="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm font-semibold">
@@ -156,9 +156,6 @@ const CaseDetail = () => {
               <p className="text-sm text-indigo-700 mb-4">
                 立即使用此模版为您生成专属的学位服创意方案。
               </p>
-              {/* Note: This button effectively just closes this tab and lets them select it in the main tab, 
-                  or we could try to handle navigation, but since it's a new tab, closing it is often best behavior 
-                  or navigating back. */}
             </div>
           </div>
         </div>
