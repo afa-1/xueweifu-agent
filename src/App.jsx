@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Initialization from './pages/Initialization';
 import ConceptSelection from './pages/ConceptSelection';
 import CaseDetail from './pages/CaseDetail';
