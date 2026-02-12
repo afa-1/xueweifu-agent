@@ -21,14 +21,14 @@ const CampaignPhotoshoot = () => {
     // Mock generation
     const timer = setTimeout(() => {
       setPhotos([
-        'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=600', // Graduate Portrait
-        'https://images.unsplash.com/photo-1627556592933-ffe99c1cd9eb?auto=format&fit=crop&q=80&w=600', // Candid Smile
-        'https://images.unsplash.com/photo-1544717302-de2939b7ef71?auto=format&fit=crop&q=80&w=600', // Throwing Hats
-        'https://images.unsplash.com/photo-1535982330050-f1c2fb970583?auto=format&fit=crop&q=80&w=600', // Group Photo
-        'https://images.unsplash.com/photo-1610116306796-6fea9f4fae38?auto=format&fit=crop&q=80&w=600', // Walking Away
-        'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=600', // Holding Diploma
-        'https://images.unsplash.com/photo-1590012314607-cda9d9b699ae?auto=format&fit=crop&q=80&w=600', // Sunset Silhouette
-        'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&q=80&w=600', // Friends Laughing
+        'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1627556592933-ffe99c1cd9eb?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1544717302-de2939b7ef71?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1535982330050-f1c2fb970583?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1610116306796-6fea9f4fae38?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1590012314607-cda9d9b699ae?auto=format&fit=crop&q=80&w=600',
+        'https://images.unsplash.com/photo-1606761568499-6d2451b23c66?auto=format&fit=crop&q=80&w=600',
       ]);
       setLoading(false);
     }, 500);
@@ -102,7 +102,7 @@ const CampaignPhotoshoot = () => {
         <button
           onClick={handleNext}
           disabled={selectedPhotos.length === 0}
-          className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50"
+          className="flex items-center px-4 py-2 bg-indigo-600 text白色 rounded-lg hover:bg-indigo-700 disabled:opacity-50"
         >
           确认并生成视频
           <ArrowRight className="w-4 h-4 ml-2" />
@@ -145,7 +145,7 @@ const CampaignPhotoshoot = () => {
                 <textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
-                    className="w-full h-14 min-h-[3.5rem] bg-white rounded-xl border border-indigo-100 shadow-sm pl-12 pr-36 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none"
+                    className="w-full h-14 min-h-[3.5rem] bg白色 rounded-xl border border-indigo-100 shadow-sm pl-12 pr-36 py-3 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all resize-none"
                     placeholder="描述您想要的场景风格，例如：'阳光明媚的校园草坪，学生们欢笑着抛起学士帽'..."
                     disabled={isRegenerating}
                 />
@@ -191,7 +191,7 @@ const CampaignPhotoshoot = () => {
                 <button
                     onClick={handleRegenerate}
                     disabled={isRegenerating || (!prompt.trim() && !uploadedImage)}
-                    className="absolute right-2 top-2 bottom-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg flex items=center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
+                    className="absolute right-2 top-2 bottom-2 px-4 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium rounded-lg flex items-center gap-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md active:scale-95"
                 >
                     {isRegenerating ? (
                         <>

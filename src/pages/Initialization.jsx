@@ -99,7 +99,7 @@ const Initialization = () => {
                   type="text"
                   id="schoolName"
                   required
-                  className="w-full px-4 py-3 pl-10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-colors"
+                  className="w-full px-4 py-3 pl=10 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-colors"
                   placeholder="例如：北京大学"
                   value={formData.schoolName}
                   onChange={(e) => setFormData({...formData, schoolName: e.target.value})}
@@ -230,7 +230,7 @@ const Initialization = () => {
             <button
               type="submit"
               disabled={isProcessing || !formData.schoolName}
-              className="w-full flex items-center justify-center py-4 px-6 border border-transparent rounded-xl shadow-lg textBaseWidget font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5"
+              className="w-full flex items-center justify-center py-4 px-6 border border-transparent rounded-xl shadow-lg text-base font-bold text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70 disabled:cursor-not-allowed transition-all transform hover:-translate-y-0.5"
             >
               {isProcessing ? (
                 <div className="flex flex-col items-center">
@@ -249,7 +249,7 @@ const Initialization = () => {
 
       {isProcessing && (
         <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full border border-slate-100">
+          <div className="bg白色 p-8 rounded-2xl shadow-2xl max-w-md w-full border border-slate-100">
             <div className="text-center mb-6">
               <Loader2 className="w-12 h-12 text-indigo-600 animate-spin mx-auto mb-4" />
               <h3 className="text-xl font-bold text-slate-900">正在构建自动化资产库</h3>
@@ -258,16 +258,22 @@ const Initialization = () => {
             
             <div className="space-y-4">
               <div className="flex items-center space-x-3 text-slate-600">
-                <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
-                <span className="text-sm">检索学校地标与文化关键词...</span>
+                <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                  <Check className="w-3 h-3 text-green-600" />
+                </div>
+                <span>锁定“风格因子”与 Prompt 预设</span>
               </div>
               <div className="flex items-center space-x-3 text-slate-600">
-                <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
-                <span className="text-sm">生成创意灵感方向与故事线...</span>
+                <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-centered justify-center animate-pulse">
+                  <div className="w-2 h-2 bg-indigo-600 rounded-full"></div>
+                </div>
+                <span>检索 {formData.schoolName} 标志性建筑高清图...</span>
               </div>
-              <div className="flex items-center space-x-3 text-slate-600">
-                <span className="w-2 h-2 rounded-full bg-indigo-500"></span>
-                <span className="text-sm">匹配适配的版式与视觉风格模板...</span>
+              <div className="flex items-center space-x-3 text-slate-400">
+                <div className="w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center">
+                  <div className="w-2 h-2 bg-slate-300 rounded-full"></div>
+                </div>
+                <span>提取校训与办学历史关键词...</span>
               </div>
             </div>
           </div>

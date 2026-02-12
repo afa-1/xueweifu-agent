@@ -93,7 +93,6 @@ const CaseDetail = () => {
       {/* Content Section */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          
           {/* Main Info */}
           <div className="lg:col-span-2 space-y-12">
             <section>
